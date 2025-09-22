@@ -2,8 +2,8 @@ name: Build manifest.json
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -15,16 +15,87 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
       - name: Generate manifest.json
+        env:
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
         run: |
-          echo "Generating manifest.json..."
-          MANIFEST_PATH="manifest.json"
-          echo "{\"version\":\"0.1.0\",\"files\":[]}" > $MANIFEST_PATH
+          python - << 'PY'
+          import os, json, time, re, hashlib
+          from pathlib import Path
+
+          repo   = os.environ['REPO']
+          branch = os.environ.get('BRANCH','main')
+          base_raw = f"https://raw.githubusercontent.com/{repo}/{branch}"
+
+          # Which files to publish in the manifest
+          roots = [
+            'base_Control/clients',
+            'base_Control/services',
+            'base_Control/basectl',
+            'base_Control/mainframe',
+            'base_Control/installer',
+          ]
+
+          def sha256_bytes(b: bytes) -> str:
+            h = hashlib.sha256(); h.update(b); return h.hexdigest()
+
+          def role_for(path: str) -> str:
+            if '/clients/'   in path: return 'client'
+            if '/basectl/'   in path: return 'pocket'
+            if '/mainframe/' in path: return 'mainframe'
+            if '/installer/' in path: return 'installer'
+            if '/services/'  in path: return 'shared'
+            return 'other'
+
+          files = {}
+          for root in roots:
+            for p in Path(root).rglob('*.lua'):
+              rel = '/' + str(p).replace('\\','/')
+              data = p.read_bytes()
+              files[rel] = {
+                'size': len(data),
+                'sha256': sha256_bytes(data),
+                'url': f"{base_raw}/{rel.lstrip('/')}",
+                'role': role_for(rel),
+              }
+
+          def grep_version(path, patterns):
+            try:
+              s = Path(path).read_text(encoding='utf-8', errors='ignore')
+            except Exception:
+              return None
+            for pat in patterns:
+              m = re.search(pat, s)
+              if m: return m.group(1)
+            return None
+
+          versions = {
+            'labelClient': grep_version('base_Control/clients/labelClient.lua', [r'CLIENT_VER\s*=\s*"(v[0-9]+\.[0-9]+\.[0-9]+)"']) or 'unknown',
+            'baseControl': grep_version('base_Control/basectl/main.lua',        [r'v(\d+\.\d+\.\d+)', r'APP_VER\s*=\s*"(v\d+\.\d+\.\d+)"']) or 'unknown',
+            'repoService': grep_version('base_Control/mainframe/repo_service.lua',[r'v(\d+\.\d+\.\d+)']) or 'unknown',
+          }
+
+          manifest = {
+            'schema': 2,
+            'generated_at': time.strftime('%Y-%m-%dT%H:%M:%SZ', time.gmtime()),
+            'repo': repo,
+            'branch': branch,
+            'versions': versions,
+            'files': files,
+          }
+
+          Path('manifest.json').write_text(json.dumps(manifest, indent=2))
+          print(f"Wrote manifest.json with {len(files)} file(s)")
+          PY
 
       - name: Commit manifest.json
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add manifest.json
-          git commit -m "Auto-generate manifest.json" || echo "No changes to commit"
-          git push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "build: update manifest.json (auto)"
+          file_pattern: manifest.json
