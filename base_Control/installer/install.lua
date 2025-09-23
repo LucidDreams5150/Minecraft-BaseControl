@@ -31,8 +31,7 @@ end
 
 local function pickRoleInteractive()
   term.clear(); term.setCursorPos(1,1)
-  print("BaseControl v2 — Unified Installer (v1.0.1)
-")
+  print("BaseControl v2 — Unified Installer (v1.0.1)")
   print("Choose what to install:")
   print("  [1] Client    — labelClient only (monitors + modem)")
   print("  [2] Pocket    — full BaseControl app (Pocket Computer)")
@@ -53,13 +52,10 @@ local function confirm(msg)
 end
 
 local function runWget(url)
-  print("
-Downloading & running:
-"..url)
+  print("Downloading & running:"..url)
   local ok = shell.run("wget","run",url)
   if not ok then
-    print("
-Error: wget failed. If this is a proxy/SSL issue, try allow-insecure-http in config.")
+    print("Error: wget failed. If this is a proxy/SSL issue, try allow-insecure-http in config.")
     return false
   end
   return true
