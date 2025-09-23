@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "generated_at": "2025-09-23T15:36:23Z",
+  "generated_at": "2025-09-23T15:44:00Z",
   "repo": "LucidDreams5150/Minecraft-BaseControl",
   "branch": "main",
   "versions": {
@@ -94,8 +94,8 @@
       "role": "mainframe"
     },
     "/base_Control/installer/install.lua": {
-      "size": 2862,
-      "sha256": "32f614f7d93ba4ec97ca81d4606034a8c8613fb7e13de6c6cb19a91a5e9a494d",
+      "size": 2858,
+      "sha256": "c8b2418805ba4c87b011fe553aa27a181ba7885896d89823d0861130e56e7d79",
       "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/installer/install.lua",
       "role": "installer"
     },
