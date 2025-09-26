@@ -1,6 +1,6 @@
 {
   "schema": 2,
-  "generated_at": "2025-09-26T09:07:57Z",
+  "generated_at": "2025-09-26T09:10:51Z",
   "repo": "LucidDreams5150/Minecraft-BaseControl",
   "branch": "main",
   "versions": {
@@ -10,8 +10,8 @@
   },
   "files": {
     "/base_Control/clients/labelClient.lua": {
-      "size": 11192,
-      "sha256": "e4406524a197b65f3750ba19e17d44f52264764b32b849d00904c3f7bc1fcf09",
+      "size": 11195,
+      "sha256": "a047cfc9533e64e9da7be5fdfbca132df9c60465faa470ee63cebda08399060a",
       "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/clients/labelClient.lua",
       "role": "client"
     },
