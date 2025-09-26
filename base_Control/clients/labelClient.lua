@@ -26,6 +26,24 @@ local function openAllModems()
   end
 end
 
+-- compat: pullEventTimeout for older CC:Tweaked
+local function pullEventTimeoutCompat(sec)
+  if os.pullEventTimeout then
+    return os.pullEventTimeout(sec)
+  end
+  local timer = os.startTimer(sec or 0)
+  while true do
+    local ev,a,b,c,d = os.pullEvent()
+    if ev == "timer" then
+      if a == timer then return nil end        -- timed out
+      -- else: some other timer; ignore and keep waiting
+    else
+      return ev,a,b,c,d                        -- got a real event
+    end
+  end
+end
+
+
 local COLORS = { white=colors.white, orange=colors.orange, magenta=colors.magenta, lightblue=colors.lightBlue,
   yellow=colors.yellow, lime=colors.lime, pink=colors.pink, gray=colors.gray, lightgray=colors.lightGray,
   cyan=colors.cyan, purple=colors.purple, blue=colors.blue, brown=colors.brown, green=colors.green,
