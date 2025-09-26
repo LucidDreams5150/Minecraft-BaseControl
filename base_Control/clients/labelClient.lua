@@ -293,7 +293,7 @@ while true do
   end
 
   -- Event handling
-  local ev, a, b, c, d = os.pullEventTimeout(2)
+  local ev, a, b, c, d = pullEventTimeoutCompat(2)
   if ev=="rednet_message" then
     local _, msg = a, b
     if type(msg)=="table" and msg.cmd=="changed" then
