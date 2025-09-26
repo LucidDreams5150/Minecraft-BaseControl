@@ -1,12 +1,12 @@
 {
   "schema": 2,
-  "generated_at": "2025-09-23T15:44:00Z",
+  "generated_at": "2025-09-26T08:34:12Z",
   "repo": "LucidDreams5150/Minecraft-BaseControl",
   "branch": "main",
   "versions": {
     "labelClient": "v0.7.0",
     "baseControl": "0.1.0",
-    "repoService": "0.1.0"
+    "repoService": "0.1.1"
   },
   "files": {
     "/base_Control/clients/labelClient.lua": {
@@ -15,16 +15,16 @@
       "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/clients/labelClient.lua",
       "role": "client"
     },
-    "/base_Control/services/labels_config_server.lua": {
-      "size": 4068,
-      "sha256": "3cdb23c1ca5fc6bb2ae39b324859e135b5af72003980ef222f6bf01eda3b9e71",
-      "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/services/labels_config_server.lua",
-      "role": "shared"
-    },
     "/base_Control/services/ae2_service.lua": {
       "size": 2645,
       "sha256": "4c64bcb74835be668eaac223476117039ed91a30517e0a0a237b621742f000f9",
       "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/services/ae2_service.lua",
+      "role": "shared"
+    },
+    "/base_Control/services/labels_config_server.lua": {
+      "size": 4068,
+      "sha256": "3cdb23c1ca5fc6bb2ae39b324859e135b5af72003980ef222f6bf01eda3b9e71",
+      "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/services/labels_config_server.lua",
       "role": "shared"
     },
     "/base_Control/services/tank_service.lua": {
@@ -39,6 +39,42 @@
       "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/services/colony_service.lua",
       "role": "shared"
     },
+    "/base_Control/basectl/page_server.lua": {
+      "size": 1638,
+      "sha256": "d9af28a45aacec8c49c104a51688a4deb6928eda2136b9de124625fd0bc2294e",
+      "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/basectl/page_server.lua",
+      "role": "pocket"
+    },
+    "/base_Control/basectl/page_metrics.lua": {
+      "size": 2487,
+      "sha256": "e90cc2b7141bee662d28336070245b84e34034374d0fb6765c6d6f0ba51a75f8",
+      "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/basectl/page_metrics.lua",
+      "role": "pocket"
+    },
+    "/base_Control/basectl/page_labels.lua": {
+      "size": 2688,
+      "sha256": "d1975dc43e7fb36a3dc3a2623c06acd422f6106e0806dcc695687de7efc4db6b",
+      "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/basectl/page_labels.lua",
+      "role": "pocket"
+    },
+    "/base_Control/basectl/page_updates.lua": {
+      "size": 1626,
+      "sha256": "4b14bc49e763b49042d40cc2c0f6b999b5fd8ad02cc29ab2bc35d8f99399bedb",
+      "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/basectl/page_updates.lua",
+      "role": "pocket"
+    },
+    "/base_Control/basectl/util.lua": {
+      "size": 1657,
+      "sha256": "5cda6a5e13844bcb98be75b3f5b37fc51cda255168849e0a780e2f8757001bb3",
+      "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/basectl/util.lua",
+      "role": "pocket"
+    },
+    "/base_Control/basectl/page_utils.lua": {
+      "size": 1139,
+      "sha256": "b975f8d9eddf003b480703081e175899d016ebe7d89330a3882e3dea99baf6d2",
+      "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/basectl/page_utils.lua",
+      "role": "pocket"
+    },
     "/base_Control/basectl/main.lua": {
       "size": 1774,
       "sha256": "33962b99fec14d17a575a295349996cd8e610c33b739d5f98b1707b39bd03edf",
@@ -51,53 +87,11 @@
       "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/basectl/ui.lua",
       "role": "pocket"
     },
-    "/base_Control/basectl/util.lua": {
-      "size": 1657,
-      "sha256": "5cda6a5e13844bcb98be75b3f5b37fc51cda255168849e0a780e2f8757001bb3",
-      "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/basectl/util.lua",
-      "role": "pocket"
-    },
-    "/base_Control/basectl/page_server.lua": {
-      "size": 1638,
-      "sha256": "d9af28a45aacec8c49c104a51688a4deb6928eda2136b9de124625fd0bc2294e",
-      "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/basectl/page_server.lua",
-      "role": "pocket"
-    },
-    "/base_Control/basectl/page_labels.lua": {
-      "size": 2688,
-      "sha256": "d1975dc43e7fb36a3dc3a2623c06acd422f6106e0806dcc695687de7efc4db6b",
-      "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/basectl/page_labels.lua",
-      "role": "pocket"
-    },
-    "/base_Control/basectl/page_metrics.lua": {
-      "size": 2487,
-      "sha256": "e90cc2b7141bee662d28336070245b84e34034374d0fb6765c6d6f0ba51a75f8",
-      "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/basectl/page_metrics.lua",
-      "role": "pocket"
-    },
-    "/base_Control/basectl/page_updates.lua": {
-      "size": 1626,
-      "sha256": "4b14bc49e763b49042d40cc2c0f6b999b5fd8ad02cc29ab2bc35d8f99399bedb",
-      "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/basectl/page_updates.lua",
-      "role": "pocket"
-    },
-    "/base_Control/basectl/page_utils.lua": {
-      "size": 1139,
-      "sha256": "b975f8d9eddf003b480703081e175899d016ebe7d89330a3882e3dea99baf6d2",
-      "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/basectl/page_utils.lua",
-      "role": "pocket"
-    },
     "/base_Control/mainframe/repo_service.lua": {
-      "size": 1652,
-      "sha256": "c267edc769b6412dfa1f9ae25066942c03218c4865eca30a5cec845d3febea62",
+      "size": 2432,
+      "sha256": "9be57098d73a36aa65b0a19c3906b90eb770ae432854a9c50ca46962023efa0a",
       "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/mainframe/repo_service.lua",
       "role": "mainframe"
-    },
-    "/base_Control/installer/install.lua": {
-      "size": 2858,
-      "sha256": "c8b2418805ba4c87b011fe553aa27a181ba7885896d89823d0861130e56e7d79",
-      "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/installer/install.lua",
-      "role": "installer"
     },
     "/base_Control/installer/install_mainframe.lua": {
       "size": 1069,
@@ -109,6 +103,12 @@
       "size": 1251,
       "sha256": "b56a882b627eabdea1949886b675a8b83865a576c955b4aa0fe388f8cfbe220e",
       "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/installer/install_pocket.lua",
+      "role": "installer"
+    },
+    "/base_Control/installer/install.lua": {
+      "size": 2858,
+      "sha256": "c8b2418805ba4c87b011fe553aa27a181ba7885896d89823d0861130e56e7d79",
+      "url": "https://raw.githubusercontent.com/LucidDreams5150/Minecraft-BaseControl/main/base_Control/installer/install.lua",
       "role": "installer"
     },
     "/base_Control/installer/install_client.lua": {
