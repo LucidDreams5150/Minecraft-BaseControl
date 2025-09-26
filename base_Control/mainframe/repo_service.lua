@@ -1,56 +1,77 @@
--- repo_service.lua — BaseControl Mainframe Repo Service (v0.1.0)
--- Provides file distribution and versioning to Pocket and Client computers.
--- Serves files listed in manifest.json to network via rednet.
-
-local service = {}
-local util = dofile("/base_Control/basectl/util.lua")
+-- repo_service.lua — resilient Mainframe Repo Service (v0.1.1)
+-- Serves manifest + files over rednet (protocol: "pkg_repo") and stays running.
 
 local PROTOCOL = "pkg_repo"
-local manifestPath = "/manifest.json"
+local MANIFEST = "/manifest.json"
 
-local manifest
-
--- Load manifest.json from disk
-local function loadManifest()
-  if not fs.exists(manifestPath) then
-    util.log("manifest.json not found!")
-    return { version = "0.0.0", files = {} }
-  end
-  local fh = fs.open(manifestPath, "r")
-  local data = textutils.unserializeJSON(fh.readAll())
-  fh.close()
-  return data or { version = "0.0.0", files = {} }
+-- Simple logger to avoid external deps
+local function log(msg)
+  local t = textutils.formatTime(os.time(), true)
+  print(("[%s] %s"):format(t, tostring(msg)))
 end
 
--- Handle incoming network requests
-local function handleRequest(sender, msg)
+local function openAllModems()
+  for _,n in ipairs(peripheral.getNames()) do
+    if peripheral.getType(n)=="modem" and not rednet.isOpen(n) then
+      rednet.open(n)
+    end
+  end
+end
+
+local function ensureManifest()
+  if fs.exists(MANIFEST) then return end
+  local fh = fs.open(MANIFEST, "w")
+  fh.write('{"schema":2,"version":"0.0.0","files":{}}')
+  fh.close()
+  log("Created placeholder "..MANIFEST)
+end
+
+local function loadManifest()
+  local fh = fs.open(MANIFEST, "r")
+  if not fh then return {schema=2, version="0.0.0", files={}} end
+  local s = fh.readAll(); fh.close()
+  local ok, data = pcall(textutils.unserializeJSON, s)
+  if ok and type(data)=="table" then return data end
+  return {schema=2, version="0.0.0", files={}}
+end
+
+local function handleRequest(sender, msg, manifest)
   if msg.cmd == "getManifest" then
-    rednet.send(sender, { ok = true, manifest = manifest }, PROTOCOL)
-  elseif msg.cmd == "getFile" and msg.path then
+    rednet.send(sender, { ok=true, manifest=manifest }, PROTOCOL)
+    return
+  end
+  if msg.cmd == "getFile" and type(msg.path)=="string" then
     if fs.exists(msg.path) then
       local fh = fs.open(msg.path, "r")
-      local data = fh.readAll()
-      fh.close()
-      rednet.send(sender, { ok = true, path = msg.path, data = data }, PROTOCOL)
+      local data = fh.readAll(); fh.close()
+      rednet.send(sender, { ok=true, path=msg.path, data=data }, PROTOCOL)
     else
-      rednet.send(sender, { ok = false, error = "File not found: "..msg.path }, PROTOCOL)
+      rednet.send(sender, { ok=false, error="File not found: "..msg.path }, PROTOCOL)
     end
-  else
-    rednet.send(sender, { ok = false, error = "Unknown command" }, PROTOCOL)
+    return
   end
+  rednet.send(sender, { ok=false, error="Unknown command" }, PROTOCOL)
 end
 
-function service.run()
-  util.openAllModems()
-  manifest = loadManifest()
-  util.log("Repo Service started. Version: "..manifest.version)
+local function main()
+  openAllModems()
+  rednet.host(PROTOCOL, "repo-mainframe") -- gives you lookup by name
+  ensureManifest()
+  local manifest = loadManifest()
+  log("Repo Service started. Version: "..(manifest.version or "?"))
 
   while true do
     local id, msg = rednet.receive(PROTOCOL)
-    if type(msg) == "table" then
-      handleRequest(id, msg)
-    end
+    local ok, err = pcall(function()
+      if type(msg) == "table" then
+        -- Reload manifest each request so you can update it on disk without restart
+        manifest = loadManifest()
+        handleRequest(id, msg, manifest)
+      end
+    end)
+    if not ok then log("Error handling request: "..tostring(err)) end
   end
 end
 
-return service
+local ok, err = pcall(main)
+if not ok then log("Fatal: "..tostring(err)) end
